@@ -1,5 +1,10 @@
 lockfileVersion: '6.0'
 
+patchedDependencies:
+  uploadthing@2.0.1:
+    hash: d3nx3dv6q3owxvrulyvmdqjdqu
+    path: patches/uploadthing@2.0.1.patch
+
 importers:
 
   .:
@@ -34,6 +39,9 @@ importers:
 
   apps/expo:
     dependencies:
+      '@acme/nextjs':
+        specifier: '*'
+        version: link:../nextjs
       '@expo/metro-config':
         specifier: ^0.7.1
         version: 0.7.1
@@ -58,6 +66,9 @@ importers:
       expo-constants:
         specifier: ~14.2.1
         version: 14.2.1(expo@48.0.15)
+      expo-image-picker:
+        specifier: ~14.1.1
+        version: 14.1.1(expo@48.0.15)
       expo-linking:
         specifier: ~4.0.1
         version: 4.0.1(expo@48.0.15)
@@ -91,6 +102,9 @@ importers:
       superjson:
         specifier: 1.9.1
         version: 1.9.1
+      uploadthing:
+        specifier: ^2.0.1
+        version: 2.0.1(patch_hash=d3nx3dv6q3owxvrulyvmdqjdqu)
     devDependencies:
       '@acme/api':
         specifier: '*'
@@ -185,6 +199,9 @@ importers:
       superjson:
         specifier: 1.9.1
         version: 1.9.1
+      uploadthing:
+        specifier: ^2.0.1
+        version: 2.0.1(patch_hash=d3nx3dv6q3owxvrulyvmdqjdqu)
       zod:
         specifier: ^3.21.4
         version: 3.21.4
@@ -5135,6 +5152,23 @@ packages:
     dependencies:
       expo: 48.0.15(@babel/core@7.21.4)
       fontfaceobserver: 2.3.0
+    dev: false
+
+  /expo-image-loader@4.1.1(expo@48.0.15):
+    resolution: {integrity: sha512-ciEHVokU0f6w0eTxdRxLCio6tskMsjxWIoV92+/ZD37qePUJYMfEphPhu1sruyvMBNR8/j5iyOvPFVGTfO8oxA==}
+    peerDependencies:
+      expo: '*'
+    dependencies:
+      expo: 48.0.15(@babel/core@7.21.4)
+    dev: false
+
+  /expo-image-picker@14.1.1(expo@48.0.15):
+    resolution: {integrity: sha512-SvWtnkLW7jp5Ntvk3lVcRQmhFYja8psmiR7O6P/+7S6f4llt3vaFwb4I3+pUXqJxxpi7BHc2+95qOLf0SFOIag==}
+    peerDependencies:
+      expo: '*'
+    dependencies:
+      expo: 48.0.15(@babel/core@7.21.4)
+      expo-image-loader: 4.1.1(expo@48.0.15)
     dev: false
 
   /expo-keep-awake@12.0.1(expo@48.0.15):
@@ -10230,6 +10264,11 @@ packages:
       browserslist: 4.21.5
       escalade: 3.1.1
       picocolors: 1.0.0
+
+  /uploadthing@2.0.1(patch_hash=d3nx3dv6q3owxvrulyvmdqjdqu):
+    resolution: {integrity: sha512-KjOfJv8yBndB91UI1n0y2VoBQ3OveplAIB0poyx7lo1CSX6cIOD5y9PFtsD0in+g5WWqakdOj8YKJwUOfvtd9w==}
+    dev: false
+    patched: true
 
   /uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}

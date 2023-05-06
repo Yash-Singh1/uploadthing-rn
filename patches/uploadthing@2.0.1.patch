@@ -1,0 +1,35 @@
+diff --git a/dist/client.d.ts b/dist/client.d.ts
+index 435d9d870da24a8e413880eeaaef9d7ce8ae746b..93a5ae09eab301c96cff8180682c283ec38a07c2 100644
+--- a/dist/client.d.ts
++++ b/dist/client.d.ts
+@@ -1,10 +1,12 @@
+ import { F as FileRouter } from './types-dbaf1b46.js';
+ 
+-declare const DANGEROUS__uploadFiles: <T extends string>(files: File[], endpoint: T, config?: {
++type FileType = File | { uri: string; name: string; type: string };
++
++declare const DANGEROUS__uploadFiles: <T extends string>(files: FileType[], endpoint: T, config?: {
+     url?: string;
+ }) => Promise<any[]>;
+ type UploadFileType<T extends string> = typeof DANGEROUS__uploadFiles<T>;
+-declare const genUploader: <TRouter extends FileRouter>() => (files: File[], endpoint: keyof TRouter extends string ? keyof TRouter : string, config?: {
++declare const genUploader: <TRouter extends FileRouter>() => (files: FileType[], endpoint: keyof TRouter extends string ? keyof TRouter : string, config?: {
+     url?: string;
+ }) => Promise<any[]>;
+ 
+diff --git a/package.json b/package.json
+index feaa919352470771e4604e677a840d8b7f1efe80..098a984a8f3beaa12cb11cd6784655f4989782f8 100644
+--- a/package.json
++++ b/package.json
+@@ -13,6 +13,11 @@
+       "types": "./dist/server.d.ts"
+     }
+   },
++  "react-native": {
++    "./package.json": "./package.json",
++    "./client": "./dist/client.mjs",
++    "./server": "./dist/server.mjs"
++  },
+   "files": [
+     "dist"
+   ],

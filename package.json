@@ -27,5 +27,10 @@
     "prettier-plugin-tailwindcss": "^0.2.8",
     "turbo": "^1.9.3",
     "typescript": "^5.0.4"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "uploadthing@2.0.1": "patches/uploadthing@2.0.1.patch"
+    }
   }
 }

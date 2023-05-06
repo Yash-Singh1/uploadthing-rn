@@ -1,132 +1,67 @@
-import React from "react";
-import { Button, Text, TextInput, TouchableOpacity, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { Dimensions, Image, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Stack, useRouter } from "expo-router";
-import { FlashList } from "@shopify/flash-list";
+import * as ImagePicker from "expo-image-picker";
+import { Stack } from "expo-router";
 
-import { api, type RouterOutputs } from "~/utils/api";
-
-const PostCard: React.FC<{
-  post: RouterOutputs["post"]["all"][number];
-  onDelete: () => void;
-}> = ({ post, onDelete }) => {
-  const router = useRouter();
-
-  return (
-    <View className="flex flex-row rounded-lg bg-white/10 p-4">
-      <View className="flex-grow">
-        <TouchableOpacity onPress={() => router.push(`/post/${post.id}`)}>
-          <Text className="text-xl font-semibold text-pink-400">
-            {post.title}
-          </Text>
-          <Text className="mt-2 text-white">{post.content}</Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity onPress={onDelete}>
-        <Text className="font-bold uppercase text-pink-400">Delete</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-const CreatePost: React.FC = () => {
-  const utils = api.useContext();
-
-  const [title, setTitle] = React.useState("");
-  const [content, setContent] = React.useState("");
-
-  const { mutate, error } = api.post.create.useMutation({
-    async onSuccess() {
-      setTitle("");
-      setContent("");
-      await utils.post.all.invalidate();
-    },
-  });
-
-  return (
-    <View className="mt-4">
-      <TextInput
-        className="mb-2 rounded bg-white/10 p-2 text-white"
-        placeholderTextColor="rgba(255, 255, 255, 0.5)"
-        value={title}
-        onChangeText={setTitle}
-        placeholder="Title"
-      />
-      {error?.data?.zodError?.fieldErrors.title && (
-        <Text className="mb-2 text-red-500">
-          {error.data.zodError.fieldErrors.title}
-        </Text>
-      )}
-      <TextInput
-        className="mb-2 rounded bg-white/10 p-2 text-white"
-        placeholderTextColor="rgba(255, 255, 255, 0.5)"
-        value={content}
-        onChangeText={setContent}
-        placeholder="Content"
-      />
-      {error?.data?.zodError?.fieldErrors.content && (
-        <Text className="mb-2 text-red-500">
-          {error.data.zodError.fieldErrors.content}
-        </Text>
-      )}
-      <TouchableOpacity
-        className="rounded bg-pink-400 p-2"
-        onPress={() => {
-          mutate({
-            title,
-            content,
-          });
-        }}
-      >
-        <Text className="font-semibold text-white">Publish post</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
+import { uploadThing } from "../utils/uploadThing";
 
 const Index = () => {
-  const utils = api.useContext();
+  const [file, setFile] = useState<ImagePicker.ImagePickerResult | null>(null);
+  const [fileUri, setFileUri] = useState<string | null>(null);
 
-  const postQuery = api.post.all.useQuery();
+  // Callback to launch image picker
+  const selectDocument = useCallback(async () => {
+    const response = await ImagePicker.launchImageLibraryAsync({
+      base64: true,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+    });
+    if (!response.canceled) {
+      setFile(response);
+      setFileUri(await uploadThing(response));
+    } else {
+      setFile(null);
+      setFileUri(null);
+    }
+  }, []);
 
-  const deletePostMutation = api.post.delete.useMutation({
-    onSettled: () => utils.post.all.invalidate(),
-  });
+  useEffect(() => {
+    if (fileUri) {
+      console.log("Successfully uploaded at", fileUri);
+    }
+  }, [fileUri]);
 
   return (
     <SafeAreaView className="bg-[#1F104A]">
       {/* Changes page title visible on the header */}
       <Stack.Screen options={{ title: "Home Page" }} />
-      <View className="h-full w-full p-4">
-        <Text className="mx-auto pb-2 text-5xl font-bold text-white">
-          Create <Text className="text-pink-400">T3</Text> Turbo
-        </Text>
-
-        <Button
-          onPress={() => void utils.post.all.invalidate()}
-          title="Refresh posts"
-          color={"#f472b6"}
-        />
-
-        <View className="py-2">
-          <Text className="font-semibold italic text-white">
-            Press on a post
-          </Text>
-        </View>
-
-        <FlashList
-          data={postQuery.data}
-          estimatedItemSize={20}
-          ItemSeparatorComponent={() => <View className="h-2" />}
-          renderItem={(p) => (
-            <PostCard
-              post={p.item}
-              onDelete={() => deletePostMutation.mutate(p.item.id)}
+      <View className="flex h-full w-full flex-col items-center justify-center">
+        <View
+          className="mx-4 my-1 flex h-1/2 items-center justify-center rounded-lg border-2 border-white"
+          style={{ width: Dimensions.get("screen").width - 32 }}
+        >
+          {file && !file.canceled && file.assets && file.assets.length > 0 ? (
+            <Image
+              source={{
+                uri: `data:image/jpeg;base64,${file.assets[0]!.base64}`,
+              }}
+              alt={"Selected file"}
+              style={{ width: 200, height: 200 }}
             />
+          ) : (
+            <Text className="text-xl font-semibold text-white">
+              No image selected
+            </Text>
           )}
-        />
-
-        <CreatePost />
+        </View>
+        <Text
+          className="mx-4 mt-2 rounded-lg bg-blue-500/80 py-2 text-center text-lg font-bold text-white"
+          style={{ width: Dimensions.get("screen").width - 32 }}
+          onPress={() => void selectDocument()}
+        >
+          Upload Banner
+        </Text>
       </View>
     </SafeAreaView>
   );
