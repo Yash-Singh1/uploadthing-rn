@@ -4,11 +4,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 import { Stack } from "expo-router";
 
-import { uploadThing } from "../utils/uploadThing";
+import type { RouterType } from "@acme/nextjs/src/pages/api/uploadthing";
+
+import { generateReactHelpers } from "~/utils/useUploadThing";
+
+const { uploadThing } = generateReactHelpers<RouterType>();
 
 const Index = () => {
   const [file, setFile] = useState<ImagePicker.ImagePickerResult | null>(null);
   const [fileUri, setFileUri] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
 
   // Callback to launch image picker
   const selectDocument = useCallback(async () => {
@@ -19,7 +24,15 @@ const Index = () => {
     });
     if (!response.canceled) {
       setFile(response);
-      setFileUri(await uploadThing(response));
+      const fileUri = await uploadThing({
+        file: response,
+        endpoint: "upload",
+        onUploadProgress({ file: _file, progress }) {
+          setTimeout(() => setProgress(progress), progress * 50);
+        },
+      });
+      setFileUri(fileUri);
+      setProgress(0);
     } else {
       setFile(null);
       setFileUri(null);
@@ -49,9 +62,13 @@ const Index = () => {
               alt={"Selected file"}
               style={{ width: 200, height: 200 }}
             />
-          ) : (
+          ) : progress === 0 ? (
             <Text className="text-xl font-semibold text-white">
               No image selected
+            </Text>
+          ) : (
+            <Text className="text-xl font-semibold text-white">
+              Uploading {progress}%
             </Text>
           )}
         </View>

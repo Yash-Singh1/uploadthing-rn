@@ -1,9 +1,19 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 patchedDependencies:
-  uploadthing@2.0.1:
-    hash: d3nx3dv6q3owxvrulyvmdqjdqu
-    path: patches/uploadthing@2.0.1.patch
+  '@uploadthing/mime-types@0.2.0':
+    hash: zhlor47jt53eacwcrzf62dbjbi
+    path: patches/@uploadthing__mime-types@0.2.0.patch
+  '@uploadthing/shared@5.0.1':
+    hash: s37ptltg4zlkdvxo442qt546mu
+    path: patches/@uploadthing__shared@5.0.1.patch
+  uploadthing@5.1.0:
+    hash: 6shsxaj3o2z4s45ju46rxrgmoe
+    path: patches/uploadthing@5.1.0.patch
 
 importers:
 
@@ -60,6 +70,9 @@ importers:
       '@trpc/server':
         specifier: ^10.23.0
         version: 10.23.0
+      '@uploadthing/shared':
+        specifier: ^5.0.1
+        version: 5.0.1(patch_hash=s37ptltg4zlkdvxo442qt546mu)(@uploadthing/mime-types@0.2.0)(zod@3.21.4)
       expo:
         specifier: ^48.0.15
         version: 48.0.15(@babel/core@7.21.4)
@@ -103,8 +116,8 @@ importers:
         specifier: 1.9.1
         version: 1.9.1
       uploadthing:
-        specifier: ^2.0.1
-        version: 2.0.1(patch_hash=d3nx3dv6q3owxvrulyvmdqjdqu)
+        specifier: ^5.1.0
+        version: 5.1.0(patch_hash=6shsxaj3o2z4s45ju46rxrgmoe)(zod@3.21.4)
     devDependencies:
       '@acme/api':
         specifier: '*'
@@ -184,6 +197,9 @@ importers:
       '@trpc/server':
         specifier: ^10.23.0
         version: 10.23.0
+      '@uploadthing/shared':
+        specifier: ^5.0.1
+        version: 5.0.1(patch_hash=s37ptltg4zlkdvxo442qt546mu)(@uploadthing/mime-types@0.2.0)(zod@3.21.4)
       next:
         specifier: ^13.3.2
         version: 13.3.2(@babel/core@7.21.4)(react-dom@18.2.0)(react@18.2.0)
@@ -200,8 +216,8 @@ importers:
         specifier: 1.9.1
         version: 1.9.1
       uploadthing:
-        specifier: ^2.0.1
-        version: 2.0.1(patch_hash=d3nx3dv6q3owxvrulyvmdqjdqu)
+        specifier: ^5.1.0
+        version: 5.1.0(patch_hash=6shsxaj3o2z4s45ju46rxrgmoe)(zod@3.21.4)
       zod:
         specifier: ^3.21.4
         version: 3.21.4
@@ -3218,6 +3234,25 @@ packages:
       '@typescript-eslint/types': 5.59.1
       eslint-visitor-keys: 3.4.0
     dev: false
+
+  /@uploadthing/mime-types@0.2.0(patch_hash=zhlor47jt53eacwcrzf62dbjbi):
+    resolution: {integrity: sha512-nRcdyM622+GYT9SdaJIVLknqoc8i7krItinfuBPtvmPc+UNGDJ+pMkr4AatYp88cEc4iYtPlN8flJvZ3dNtgrg==}
+    dev: false
+    patched: true
+
+  /@uploadthing/shared@5.0.1(patch_hash=s37ptltg4zlkdvxo442qt546mu)(@uploadthing/mime-types@0.2.0)(zod@3.21.4):
+    resolution: {integrity: sha512-SMIM9Dyxu/LuKZCM0w/yCXL/wrZedUHKiEK022y5LXhbG7uApVFBPChC2+CCY7ZRU3O9sCCNsDj6OjdygIOEQw==}
+    peerDependencies:
+      '@uploadthing/mime-types': ^0.2.0
+      zod: ^3.21.4
+    peerDependenciesMeta:
+      '@uploadthing/mime-types':
+        optional: true
+    dependencies:
+      '@uploadthing/mime-types': 0.2.0(patch_hash=zhlor47jt53eacwcrzf62dbjbi)
+      zod: 3.21.4
+    dev: false
+    patched: true
 
   /@urql/core@2.3.6(graphql@15.8.0):
     resolution: {integrity: sha512-PUxhtBh7/8167HJK6WqBv6Z0piuiaZHQGYbhwpNL9aIQmLROPEdaUYkY4wh45wPQXcTpnd11l0q3Pw+TI11pdw==}
@@ -10265,8 +10300,13 @@ packages:
       escalade: 3.1.1
       picocolors: 1.0.0
 
-  /uploadthing@2.0.1(patch_hash=d3nx3dv6q3owxvrulyvmdqjdqu):
-    resolution: {integrity: sha512-KjOfJv8yBndB91UI1n0y2VoBQ3OveplAIB0poyx7lo1CSX6cIOD5y9PFtsD0in+g5WWqakdOj8YKJwUOfvtd9w==}
+  /uploadthing@5.1.0(patch_hash=6shsxaj3o2z4s45ju46rxrgmoe)(zod@3.21.4):
+    resolution: {integrity: sha512-adWd3D0/r25EspS1s+p2RLvSpDPLOQC+AM+mH1JomsTdEDiderjxMeo6juZUWnq96O/Dsumh97SeFJXDLWI+Qw==}
+    dependencies:
+      '@uploadthing/mime-types': 0.2.0(patch_hash=zhlor47jt53eacwcrzf62dbjbi)
+      '@uploadthing/shared': 5.0.1(patch_hash=s37ptltg4zlkdvxo442qt546mu)(@uploadthing/mime-types@0.2.0)(zod@3.21.4)
+    transitivePeerDependencies:
+      - zod
     dev: false
     patched: true
 

@@ -1,17 +1,15 @@
 // Handler for uploading files to S3
 
 import {
-  createFilething,
   createNextPageApiHandler,
+  createUploadthing,
   type FileRouter,
-} from "uploadthing/server";
+} from "uploadthing/next-legacy";
 
-const f = createFilething();
+const f = createUploadthing();
 
 const router = {
-  upload: f
-    .fileTypes(["image"])
-    .maxSize("1GB")
+  upload: f({ image: { maxFileSize: "1GB" } })
     // eslint-disable-next-line @typescript-eslint/require-await
     .middleware(async (...args) => {
       console.log("middleware", args);

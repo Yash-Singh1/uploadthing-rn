@@ -1,0 +1,17 @@
+diff --git a/package.json b/package.json
+index 42bfe5134362c5d31e18c16554952c68bd35a444..125ff4c19431bbf128c28db538f88c988e63c1d2 100644
+--- a/package.json
++++ b/package.json
+@@ -13,6 +13,12 @@
+       "import": "./dist/db.mjs"
+     }
+   },
++  "browser": {
++    "./package.json": "./package.json",
++    ".": "./dist/index.mjs",
++    "./index": "./dist/index.mjs",
++    "./db": "./dist/db.mjs"
++  },
+   "files": [
+     "dist"
+   ],
