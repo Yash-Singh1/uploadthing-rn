@@ -29,32 +29,26 @@ export function generateReactHelpers<RouterType extends FileRouter>() {
       progress: number;
     }) => void;
   }) => {
-    const fileName =
-      file.assets[0]!.fileName ||
-      file.assets[0]!.uri.split("/").pop() ||
-      "image.jpeg";
+    return await uploadFiles(
+      {
+        endpoint,
+        files: file.assets.map((asset) => {
+          const fileName =
+            asset.fileName || asset.uri.split("/").pop() || "image.jpeg";
 
-    return (
-      (
-        await uploadFiles(
-          {
-            endpoint,
-            files: [
-              {
-                uri: file.assets[0]!.uri,
-                name: fileName,
-                type: `image/${fileName.split(".").pop()}`,
-              } as unknown as File,
-            ],
-            input,
-            onUploadProgress,
-          },
-          {
-            url: `${getBaseUrl()}/api/uploadthing`,
-          },
-        )
-      )[0] as { fileUrl: string }
-    ).fileUrl;
+          return {
+            uri: asset.uri,
+            name: fileName,
+            type: `image/${fileName.split(".").pop()}`,
+          } as unknown as File;
+        }),
+        input,
+        onUploadProgress,
+      },
+      {
+        url: `${getBaseUrl()}/api/uploadthing`,
+      },
+    );
   };
 
   return {
@@ -74,7 +68,8 @@ export function generateReactHelpers<RouterType extends FileRouter>() {
             ...files,
             {
               ...response.assets[0]!,
-              uri: await uploadThing({ file: response, endpoint }),
+              uri: (await uploadThing({ file: response, endpoint }))[0]!
+                .fileUrl,
             },
           ]);
         }

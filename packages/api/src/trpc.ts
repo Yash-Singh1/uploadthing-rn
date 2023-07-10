@@ -12,7 +12,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { getServerSession, type Session } from "@acme/auth";
-import { prisma } from "@acme/db";
+// import { prisma } from "@acme/db";
 
 /**
  * 1. CONTEXT
@@ -39,7 +39,7 @@ type CreateContextOptions = {
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
-    prisma,
+    // prisma,
   };
 };
 

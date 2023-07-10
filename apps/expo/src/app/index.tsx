@@ -24,14 +24,14 @@ const Index = () => {
     });
     if (!response.canceled) {
       setFile(response);
-      const fileUri = await uploadThing({
+      const uploadThingResponse = await uploadThing({
         file: response,
         endpoint: "upload",
         onUploadProgress({ file: _file, progress }) {
           setTimeout(() => setProgress(progress), progress * 50);
         },
       });
-      setFileUri(fileUri);
+      setFileUri(uploadThingResponse[0]!.fileUrl);
       setProgress(0);
     } else {
       setFile(null);
