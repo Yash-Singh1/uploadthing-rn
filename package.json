@@ -2,37 +2,35 @@
   "name": "create-t3-turbo",
   "private": true,
   "engines": {
-    "node": ">=v18.16.0"
+    "node": ">=20.11.0"
   },
-  "packageManager": "pnpm@8.3.1",
+  "packageManager": "pnpm@8.15.0",
   "scripts": {
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo clean",
-    "db:generate": "turbo db:generate",
-    "db:push": "turbo db:push db:generate",
+    "db:push": "pnpm -F db push",
+    "db:studio": "pnpm -F db studio",
     "dev": "turbo dev --parallel",
-    "format": "prettier --write \"**/*.{js,cjs,mjs,ts,tsx,md,json}\" --ignore-path .gitignore",
-    "lint": "turbo lint && manypkg check",
-    "lint:fix": "turbo lint:fix && manypkg fix",
-    "type-check": "turbo type-check"
+    "format": "turbo format --continue -- --cache --cache-location node_modules/.cache/.prettiercache",
+    "format:fix": "turbo format --continue -- --write --cache --cache-location node_modules/.cache/.prettiercache",
+    "lint": "turbo lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",
+    "lint:fix": "turbo lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
+    "lint:ws": "pnpm dlx sherif@latest",
+    "postinstall": "pnpm lint:ws",
+    "typecheck": "turbo typecheck"
   },
-  "dependencies": {
-    "@acme/eslint-config": "^0.1.0",
-    "@ianvs/prettier-plugin-sort-imports": "^3.7.2",
-    "@manypkg/cli": "^0.20.0",
-    "@types/prettier": "^2.7.2",
-    "eslint": "^8.39.0",
-    "prettier": "^2.8.8",
-    "prettier-plugin-tailwindcss": "^0.2.8",
-    "turbo": "^1.9.3",
-    "typescript": "^5.0.4"
+  "devDependencies": {
+    "@acme/prettier-config": "workspace:^0.1.0",
+    "@turbo/gen": "^1.11.3",
+    "prettier": "^3.1.1",
+    "turbo": "^1.11.3",
+    "typescript": "^5.3.3"
   },
+  "prettier": "@acme/prettier-config",
   "pnpm": {
-    "patchedDependencies": {
-      "uploadthing@5.1.0": "patches/uploadthing@5.1.0.patch",
-      "@uploadthing/shared@5.0.1": "patches/@uploadthing__shared@5.0.1.patch",
-      "@uploadthing/mime-types@0.2.0": "patches/@uploadthing__mime-types@0.2.0.patch"
+    "overrides": {
+      "@auth/core": "0.20.0"
     }
   }
 }
